@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <!-- <header>
+    <header>
       <h1>JS For Beginners</h1>
     </header>
 
@@ -29,10 +29,34 @@
 
       <ul id="users"></ul>
     </section>
-     -->
-      
-    <script src="Store.js"></script>
-  
+    
+
+    <!-- <script src="Store.js"></script>
+   -->
+<script>
+    
+function saveDetails(event){
+        event.preventDefault();
+        let name = event.target.name.value;
+        let email = event.target.email.value;
+        localStorage.setItem('name', name);
+        localStorage.setItem('email', email);
+        
+        var obj = {
+            name : name,
+            email : email
+
+        };
+
+       localStorage.setItem('user_details', JSON.stringify(obj));
+       console.log(localStorage);
+        
+
+
+
+}
+
+</script>
 
 </body>
 </html>
