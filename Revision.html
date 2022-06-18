@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Application</title>
+</head>
+<body>
+    <form onsubmit="saveToLocalStorage(event)">
+
+    <h1>Enter User Details :</h1>
+
+    <label>Name :</label>
+    <input id='name' type="text" name="User_Name" required>
+   
+    <label>Email ID :</label>
+    <input id='email' type="email" name="Email_ID" required>
+    
+    <label>Phone Number :</label>
+    <input id='number' type="number" name="Phone_Number">
+
+    <button>Submit</button>
+
+</form>
+<ul id="listOfUsers"> </ul>
+
+<script>
+//1..... storing Data In LocalStorage
+
+function saveToLocalStorage(event){
+    event.preventDefault();
+    let name = event.target.User_Name.value;
+    let email = event.target.Email_ID.value;
+    let number = event.target.Phone_Number.value;
+    // console.log(name + " "+ email +" "+number);
+
+    // localStorage.setItem('name',name);
+    // localStorage.setItem('email',email);
+    // localStorage.setItem('number',number);
+
+    //2..... Converting Object to String Using 
+    let obj = {
+        name : name,
+        email : email,
+        number : number
+    };
+    // localStorage.setItem('User_Details',JSON.stringify(obj))
+
+    //3..... storing Multiple Data In LocalStorage
+    localStorage.setItem(obj.email,JSON.stringify(obj));
+
+    //4....Show User On To The Screen
+    showUserDetailsOnScreen(obj);
+    // localStorage.getItem(obj.email,JSON.parse(obj));
+    function showUserDetailsOnScreen(obj) {
+        
+        let parentNode = document.getElementById('listOfUsers');
+        const childHTML = `<li id='${user.email}'> ${user.name} -- ${user.email}
+          <button onclick = deleteUser('${user.email}')> Delete User </button>
+          <button onclick = editUser('${user.name}','${user.email}')> Edit User </button>
+            </li>`
+
+        parentNode.innerHTML = parentNode.innerHTML + childHTML
+          }
+           
+          //5...Delete User From Screen
+          function deleteUser(email) {
+           // console.log(email);
+            localStorage.removeItem(email);
+            removeUserFromScreen(email);
+          }
+
+          function removeUserFromScreen(email){
+            const parentNode = document.getElementById('listOfUsers');
+            const childNoreToBeDeleted = document.getElementById(email);
+
+            parentNode.removeChild(childNoreToBeDeleted);
+          }
+          //6...Edit User From Screen
+          function editUser(name,email) {
+            // console.log(email);
+            document.getElementById('name').value = name;
+            document.getElementById('email').value = email;
+
+            deleteUser(email);
+          }
+}
+
+
+
+
+
+
+
+</script>
+<!-- <script src="Revision.js">     -->
+<!-- </script> -->
+</body>
+</html>

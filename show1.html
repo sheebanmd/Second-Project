@@ -53,9 +53,11 @@ function saveDetails(event){
 }
       function showUserDetails(user) {
         const parentNode = document.getElementById('listOfUsers');
-        const childHTML = `<li> ${user.name} + ${user.email}</li>`
+        const childHTML = `<li> ${user.name} - ${user.email}
+           <button> Delete User </button>                     
+            </li>`
 
-        parentNode.innerHTML = parentNode.innerHTML + childHTML
+        parentNode.innerHTML = parentNode.innerHTML + childHTML;
 
 
       }
