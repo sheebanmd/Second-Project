@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <section class="container">
+    <form onsubmit="saveDetails(event)">
+    <label for="Amount">Choose Expense Amount :</label>
+    <input type="number" id="Amount" >
+    <br>
+    <br>
+
+    <label for="Description">Choose Description :</label>
+    <input type="text" id="Description" >
+    <br>
+    <br>
+    
+    <label for="Category">Choose Category :</label>
+    <input type="text" id="Category" >
+    <br>
+    <br>
+    <input class="btn" type="submit" value="Add Expense">
+    <!-- <button id="Submit">Add Expense</button> -->
+    </form>
+    <ul id="users"></ul>
+    <ul id="listOfUsers"> </ul>
+    </Section>
+
+    <script>
+   
+    function saveDetails(event){
+        event.preventDefault();
+        let Amount = event.target.Amount.value;
+        let Description = event.target.Description.value;
+        let Category = event.target.Category.value;
+        
+        // localStorage.setItem('Amount', Amount);
+        // localStorage.setItem('Description', Description);
+        // localStorage.setItem('Category', Category);
+        
+        var obj = {
+            Amount : Amount,
+            Description : Description,
+            Category : Category 
+        };
+
+        localStorage.setItem(obj.Category, JSON.stringify(obj));
+       console.log(localStorage);
+       showUserDetails(obj);
+}
+        function showUserDetails(user) {
+            const parentNode = document.getElementById('listOfUsers');
+            const childHTML = `<li id='${user.Category}'> ${user.Amount} ${user.Description}-- ${user.Category}
+            <button onclick = deleteUser('${user.Category}')> Delete User </button>
+            <button onclick = editUser('${user.Amount}','${user.Description}','${user.Category}')> Edit User </button>
+                 </li>`
+
+        parentNode.innerHTML = parentNode.innerHTML + childHTML
+          }   
+          
+          function deleteUser(Category) {
+           // console.log(email);
+            localStorage.removeItem(Category);
+            removeUserFromScreen(Category);
+          }
+
+          function removeUserFromScreen(Category){
+            const parentNode = document.getElementById('listOfUsers');
+            const childNodeToBeDeleted = document.getElementById(Category);
+
+            parentNode.removeChild(childNodeToBeDeleted);
+          }
+
+          function editUser(Amount,Category,Description) {
+            // console.log(email);
+            document.getElementById('Amount').value = Amount;
+            document.getElementById('Category').value = Category;
+            document.getElementById('Description').value = Description;
+            deleteUser(Category);
+          }
+
+    </script>
+</body>
+</html>
