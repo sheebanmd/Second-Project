@@ -1,0 +1,118 @@
+<html>
+    <body>
+        <title>Expense Tracker Using Axios </title>
+        <form  onsubmit="saveToLocalStorage(event)">
+            <label> Amount</label>
+            <input id='amount' type="text" name="amount"  required/>
+            <br>
+            <br>
+            <label> category </label>
+            <input id='category' type="category" name="categoryId"  required/>
+            <br>
+            <br>
+            <label> Description</label>
+            <input id='Description' type="tel" name="Description" />
+            <br>
+            <br>
+            <button> Submit </button>
+        </form>
+        <ul id='listOfUsers'></ul>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+
+        <script>
+            function saveToLocalStorage(event) {
+                event.preventDefault();
+                const amount = event.target.amount.value;
+                const category = event.target.categoryId.value;
+                const Description = event.target.Description.value;
+                // localStorage.setItem('amount', amount);
+                // localStorage.setItem('category', category);
+                // localStorage.setItem('Description', Description)
+                const obj = {
+                    amount,
+                    category,
+                    Description
+                }
+
+                axios.post("https://crudcrud.com/api/aae7ae15e41945f0b23f28932cae62ae/expensetracker",obj)
+                .then((response)=>{
+                    showNewUserOnScreen(response.data)
+                    console.log(response);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                });
+
+
+                // localStorage.setItem(obj.category, JSON.stringify(obj))
+                // showNewUserOnScreen(obj)
+            }
+
+            window.addEventListener("DOMContentLoaded", () => {
+
+                const localStorageObj = localStorage;
+                const localstoragekeys  = Object.keys(localStorageObj)
+
+                for(var i =0; i< localstoragekeys.length; i++){
+                    const key = localstoragekeys[i]
+                    const userDetailsString = localStorageObj[key];
+                    const userDetailsObj = JSON.parse(userDetailsString);
+                    showNewUserOnScreen(userDetailsObj)
+                }
+            })
+
+            function showNewUserOnScreen(user){
+                document.getElementById('category').value = '';
+                document.getElementById('amount').value = '';
+                document.getElementById('Description').value ='';
+                // console.log(localStorage.getItem(user.categoryId))
+                if(localStorage.getItem(user.category) !== null){
+                    removeUserFromScreen(user.category)
+                }
+
+                const parentNode = document.getElementById('listOfUsers');
+                const childHTML = `<li id=${user.category}> ${user.amount}--${user.Description} -- ${user.category}
+                                        <button onclick=deleteUser('${user.category}')> Delete User </button>
+                                        <button onclick=editUserDetails('${user.category}','${user.amount}','${user.Description}')>Edit User </button>
+                                     </li>`
+
+                parentNode.innerHTML = parentNode.innerHTML + childHTML;
+            }
+
+            //Edit User
+
+            function editUserDetails(categoryId, amount, Description){
+
+                document.getElementById('category').value = categoryId;
+                document.getElementById('amount').value = amount;
+                document.getElementById('Description').value =Description;
+
+                deleteUser(categoryId)
+             }
+
+            // deleteUser('abc@gmail.com')
+
+            function deleteUser(categoryId){
+                console.log(categoryId)
+                localStorage.removeItem(categoryId);
+                removeUserFromScreen(categoryId);
+
+            }
+
+            function removeUserFromScreen(categoryId){
+                const parentNode = document.getElementById('listOfUsers');
+                const childNodeToBeDeleted = document.getElementById(categoryId);
+                if(childNodeToBeDeleted) {
+                    parentNode.removeChild(childNodeToBeDeleted)
+                }
+            }
+
+
+
+
+
+
+
+        </script>
+    </body>
+</html>
