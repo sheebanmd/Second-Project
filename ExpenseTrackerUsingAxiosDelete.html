@@ -1,0 +1,123 @@
+<html>
+    <body>
+        <title>Expense Tracker Using Axios </title>
+        <form  onsubmit="saveToLocalStorage(event)">
+            <label> Amount</label>
+            <input id='amount' type="text" name="amount"  required/>
+            <br>
+            <br>
+            <label> category </label>
+            <input id='category' type="category" name="categoryId"  required/>
+            <br>
+            <br>
+            <label> Description</label>
+            <input id='Description' type="tel" name="Description" />
+            <br>
+            <br>
+            <button> Submit </button>
+        </form>
+        <ul id='listOfUsers'></ul>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+
+        <script>
+            function saveToLocalStorage(event) {
+                event.preventDefault();
+                const amount = event.target.amount.value;
+                const category = event.target.categoryId.value;
+                const Description = event.target.Description.value;
+
+                const obj = {
+                    amount,
+                    category,
+                    Description
+                }
+
+                axios.post("https://crudcrud.com/api/aae7ae15e41945f0b23f28932cae62ae/expensetracker",obj)
+                .then((response)=>{
+                    showNewUserOnScreen(response.data)
+                    console.log(response);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                });
+
+            }
+
+            window.addEventListener("DOMContentLoaded", () => {
+
+                axios.get("https://crudcrud.com/api/aae7ae15e41945f0b23f28932cae62ae/expensetracker")
+                .then((response)=>{
+                    // showNewUserOnScreen(response.data)
+                    console.log(response);
+
+                    for (let i = 0; i < response.data.length; i++) {
+                        showNewUserOnScreen(response.data[i]);                        
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err);
+                });
+
+            })
+
+            function showNewUserOnScreen(user){
+
+                document.getElementById('category').value = '';
+                document.getElementById('amount').value = '';
+                document.getElementById('Description').value ='';
+                // console.log(localStorage.getItem(user.categoryId))
+                if(localStorage.getItem(user.category) !== null){
+                    removeUserFromScreen(user.category)
+                }
+
+                const parentNode = document.getElementById('listOfUsers');
+                const childHTML = `<li id=${user._id}> ${user.amount}--${user.Description} -- ${user.category}
+                                        <button onclick=deleteUser('${user._id}')> Delete User </button>
+                                        <button onclick=editUserDetails('${user._id}','${user.amount}','${user.Description}')>Edit User </button>
+                                     </li>`
+
+                parentNode.innerHTML = parentNode.innerHTML + childHTML;
+            }
+
+            //Edit User
+
+            function editUserDetails(categoryId, amount, Description){
+
+                document.getElementById('category').value = categoryId;
+                document.getElementById('amount').value = amount;
+                document.getElementById('Description').value =Description;
+
+                deleteUser(categoryId)
+             }
+
+            // deleteUser('abc@gmail.com')
+
+            function deleteUser(userID){
+
+                axios.delete(`https://crudcrud.com/api/aae7ae15e41945f0b23f28932cae62ae/expensetracker/${userID}`)
+                .then((response)=>{
+                    removeUserFromScreen(userID)
+                })
+                .catch((err)=>{
+                    console.log(err);
+                });
+
+            }
+
+            function removeUserFromScreen(userID){
+                const parentNode = document.getElementById('listOfUsers');
+                const childNodeToBeDeleted = document.getElementById(userID);
+                if(childNodeToBeDeleted) {
+                    parentNode.removeChild(childNodeToBeDeleted)
+                }
+            }
+
+
+
+
+
+
+
+        </script>
+    </body>
+</html>
