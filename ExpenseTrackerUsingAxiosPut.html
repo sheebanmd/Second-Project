@@ -32,7 +32,7 @@
                     Description
                 }
 
-                axios.post("https://crudcrud.com/api/aae7ae15e41945f0b23f28932cae62ae/expensetracker",obj)
+                axios.post("https://crudcrud.com/api/7f68a9e4b0e74a6ea908006bc0e11bae/expensetracker",obj)
                 .then((response)=>{
                     showNewUserOnScreen(response.data)
                     console.log(response);
@@ -45,7 +45,7 @@
 
             window.addEventListener("DOMContentLoaded", () => {
 
-                axios.get("https://crudcrud.com/api/aae7ae15e41945f0b23f28932cae62ae/expensetracker")
+                axios.get("https://crudcrud.com/api/7f68a9e4b0e74a6ea908006bc0e11bae/expensetracker")
                 .then((response)=>{
                     // showNewUserOnScreen(response.data)
                     console.log(response);
@@ -94,7 +94,7 @@
 
             function deleteUser(userID){
 
-                axios.delete(`https://crudcrud.com/api/aae7ae15e41945f0b23f28932cae62ae/expensetracker/${userID}`)
+                axios.delete(`https://crudcrud.com/api/7f68a9e4b0e74a6ea908006bc0e11bae/expensetracker/${userID}`)
                 .then((response)=>{
                     removeUserFromScreen(userID)
                 })

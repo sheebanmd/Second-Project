@@ -1,26 +1,33 @@
 <html>
     <body>
+        <title>Expense Tracker</title>
         <form  onsubmit="saveToLocalStorage(event)">
             <label> Amount</label>
             <input id='amount' type="text" name="amount"  required/>
+            <br>
+            <br>
             <label> category </label>
             <input id='category' type="category" name="categoryId"  required/>
+            <br>
+            <br>
             <label> Description</label>
             <input id='Description' type="tel" name="Description" />
+            <br>
+            <br>
             <button> Submit </button>
         </form>
         <ul id='listOfUsers'></ul>
         <script>
             function saveToLocalStorage(event) {
                 event.preventDefault();
-                const name = event.target.amount.value;
+                const amount = event.target.amount.value;
                 const category = event.target.categoryId.value;
                 const Description = event.target.Description.value;
-                // localStorage.setItem('name', name);
+                // localStorage.setItem('amount', amount);
                 // localStorage.setItem('category', category);
                 // localStorage.setItem('Description', Description)
                 const obj = {
-                    name,
+                    amount,
                     category,
                     Description
                 }
@@ -50,9 +57,9 @@
                 }
 
                 const parentNode = document.getElementById('listOfUsers');
-                const childHTML = `<li id=${user.category}> ${user.name} - ${user.category}
+                const childHTML = `<li id=${user.category}> ${user.amount}--${user.Description} -- ${user.category}
                                         <button onclick=deleteUser('${user.category}')> Delete User </button>
-                                        <button onclick=editUserDetails('${user.category}','${user.name}','${user.Description}')>Edit User </button>
+                                        <button onclick=editUserDetails('${user.category}','${user.amount}','${user.Description}')>Edit User </button>
                                      </li>`
 
                 parentNode.innerHTML = parentNode.innerHTML + childHTML;
@@ -60,10 +67,10 @@
 
             //Edit User
 
-            function editUserDetails(categoryId, name, Description){
+            function editUserDetails(categoryId, amount, Description){
 
                 document.getElementById('category').value = categoryId;
-                document.getElementById('amount').value = name;
+                document.getElementById('amount').value = amount;
                 document.getElementById('Description').value =Description;
 
                 deleteUser(categoryId)

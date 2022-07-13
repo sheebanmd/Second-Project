@@ -50,14 +50,33 @@
         };
 
         localStorage.setItem(obj.Category, JSON.stringify(obj));
-       console.log(localStorage);
        showUserDetails(obj);
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+                const localStorageObj = localStorage;
+                const localstoragekeys  = Object.keys(localStorageObj)
+
+                for(var i =0; i< localstoragekeys.length; i++){
+                    const key = localstoragekeys[i]
+                    const userDetailsString = localStorageObj[key];
+                    const userDetailsObj = JSON.parse(userDetailsString);
+                    showUserDetails(userDetailsObj)
+                }
+            })
+
         function showUserDetails(user) {
+          document.getElementById('Category').value = '';
+                document.getElementById('Amount').value = '';
+                document.getElementById('Description').value ='';
+                // console.log(localStorage.getItem(user.emailId))
+                if(localStorage.getItem(user.Category) !== null){
+                    removeUserFromScreen(user.Category)
+                }
             const parentNode = document.getElementById('listOfUsers');
             const childHTML = `<li id='${user.Category}'> ${user.Amount} ${user.Description}-- ${user.Category}
-            <button onclick = deleteUser('${user.Category}')> Delete User </button>
-            <button onclick = editUser('${user.Amount}','${user.Description}','${user.Category}')> Edit User </button>
+            <button onclick = deleteUser('${user.Category}')> Delete User </button><br>
+            <button onclick = editUser(${user.Amount},${user.Description},${user.Category})> Edit User </button>
                  </li>`
 
         parentNode.innerHTML = parentNode.innerHTML + childHTML
@@ -72,16 +91,18 @@
           function removeUserFromScreen(Category){
             const parentNode = document.getElementById('listOfUsers');
             const childNodeToBeDeleted = document.getElementById(Category);
-
+            if(childNodeToBeDeleted) { 
             parentNode.removeChild(childNodeToBeDeleted);
           }
-
-          function editUser(Amount,Category,Description) {
-            // console.log(email);
+        }
+          function editUser(Amount,Description,Category) {
+            console.log(Amount,Description,Category);
             document.getElementById('Amount').value = Amount;
-            document.getElementById('Category').value = Category;
             document.getElementById('Description').value = Description;
+            document.getElementById('Category').value = Category;
+
             deleteUser(Category);
+            
           }
 
     </script>
